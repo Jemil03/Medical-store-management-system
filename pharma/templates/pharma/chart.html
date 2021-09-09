@@ -3,11 +3,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- semantic UI -->
+    <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+    <!--Chart js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+    <title>Purchase Details</title>
     <link rel="stylesheet" href="{% static 'pharma/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'pharma/css/bootstrap-theme.min.css' %}">
     <link rel="stylesheet" href="{% static 'pharma/css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"
             integrity="sha384-4oV5EgaV02iISL2ban6c/RmotsABqE4yZxZLcYMAdG7FAPsyHYAPpywE9PJo+Khy"
             crossorigin="anonymous"></script>
@@ -15,12 +30,37 @@
     <script type="text/javascript" src="{% static 'pharma/js/npm.js' %}"></script>
     <script type="text/javascript" src="{% static 'pharma/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'pharma/js/script.js' %}"></script>
-    <title>All Purchase Details</title>
 
     <script>
-        const mydata = "{{ purchase | safe }}";
-    </script>
+        $(document).ready(function(){
+
+    
+            var ctx = document.getElementById("myChart").getContext('2d');
+            //ctx.backgroundColor=;
+
+
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["1",	"2","3","4","5","6","7","8","9","10","11","12"	],
+        datasets: [{
+            label: 'Last 12 Purchases', // Name the series
+            data: [{{purchase.0}},{{purchase.1}},{{purchase.2}},{{purchase.3}},{{purchase.4}},{{purchase.5}},{{purchase.6}},{{purchase.7}},{{purchase.8}},{{purchase.9}},{{purchase.10}},{{purchase.11}},{{purchase.12}}], // Specify the data values array
+            fill: false,
+            borderColor: '#2196f3', // Add custom color border (Line)
+            backgroundColor: '#FFFF', // Add custom color background (Points and Fill)
+            borderWidth: 1 // Specify bar border width
+        }]},
+    options: {
+      responsive: true, // Instruct chart js to respond nicely.
+      maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+    }
+});
+});
+
+      </script>
 </head>
+
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -74,85 +114,16 @@
         </div>
     </div>
 </nav>
-<div class="modal fade" id="modalContactForm" tabindex="-1">
-    <form action="https://formspree.io/soham5959595@gmail.com" method="post">
-        {% csrf_token %}
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold">Write to us</h4>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body mx-3">
-                    <div class="md-form">
-                        <i class="fa fa-user prefix grey-text"></i><label class="modaltext" for="form34"> Your name</label>
-                        <input type="text" id="form34" name="cu-name" class="form-control validate">
-                    </div>
-                    <div class="md-form">
-                        <i class="fa fa-envelope prefix grey-text"></i><label class="modaltext" for="form29"> Your email</label>
-                        <input type="email" id="form29" name="cu-mail" class="form-control validate">
-                    </div>
-                    <div class="md-form">
-                        <i class="fa fa-tag prefix grey-text"></i><label class="modaltext" for="form32"> Subject</label>
-                        <input type="text" id="form32" name="cu-subject" class="form-control validate">
-                    </div>
-                    <div class="md-form">
-                        <i class="fas fa-pencil-alt prefix grey-text"></i><label class="modaltext" for="form8"> Your message</label>
-                        <textarea type="text" id="form8" name="cu-message" class="md-textarea form-control"
-                                  rows="4"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="submit" class="btn btn-brown">Send <i class="fas fa-paper-plane ml-1"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-<div class="container-fluid martop7">
-    <div class="jumbotron jumcust">
-        <h2>Purchase Details</h2>
-        <div class="row padtop15">
-            <div class="col-md-1"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-1">
-            </div>
-            <table border="1" class="table table-responsive table-hover col-md-10">
-                <tr>
-                    <th>Purchase ID</th>
-                    <th>Product Name</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone Number</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Date</th>
-                    <th>Total</th>
-                </tr>
-                {% for foo in purchase %}
-                    <tr>
-                        <td class="idlink"><a href="/pharma/purchaseformview{{ foo.id }}/">{{ foo.id }}</a></td>
-                        <td>{{ foo.pname }}</td>
-                        <td>{{ foo.fname }}</td>
-                        <td>{{ foo.lname }}</td>
-                        <td>{{ foo.phn_no }}</td>
-                        <td>{{ foo.price }}</td>
-                        <td>{{ foo.qty }}</td>
-                        <td>{{ foo.date }}</td>
-                        <td>{{ foo.total }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <footer><h3>Click on a Purchase ID to Update or Delete the record.</h3></footer>
-    </div>
-</div>
-<footer id="contact" class="container-fluid text-center">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-v4-grid-only@1.0.0/dist/bootstrap-grid.min.css">
 
-</footer>
-</body>
+
+<div class="jumbotron" style="background:bisque;">
+    <canvas id="myChart" width="200" height="500" ></canvas>
+
+
+</div>
+  </body>
 </html>

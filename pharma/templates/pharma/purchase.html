@@ -2,7 +2,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<
 <head>
     <title>Purchase Details</title>
     <link rel="stylesheet" href="{% static 'pharma/css/bootstrap.min.css' %}">
@@ -16,6 +15,52 @@
     <script type="text/javascript" src="{% static 'pharma/js/npm.js' %}"></script>
     <script type="text/javascript" src="{% static 'pharma/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'pharma/js/script.js' %}"></script>
+
+    <script type="text/javascript">
+        //<![CDATA[ 
+        // array of possible countries in the same order as they appear in the country selection list 
+        //var context = JSON.parse("{{data|escapejs}}");
+        const mydata = "{{ purchase | safe }}";
+
+        var medicineList = new Array(8)
+        medicineList["empty"] = [1];
+        medicineList["calpol"] = [50];
+        medicineList["examine"] = [399];
+        medicineList["chloroquine"] = [200];
+        medicineList["Coldrain"] = [100];
+        /* CountryChange() is called from the onchange event of a select element. 
+         * param selectObj - the select object which fired the on change event. 
+         */
+        function countryChange(selectObj) {
+          // get the index of the selected option 
+          var idx = selectObj.selectedIndex;
+          // get the value of the selected option 
+          var which = selectObj.options[idx].value;
+          // use the selected option value to retrieve the list of items from the countryLists array 
+          cList = medicineList[which];
+          // get the country select element via its known id 
+          var cSelect = document.getElementById("price");
+          // remove the current options from the country select 
+          var len = cSelect.options.length;
+          while (cSelect.options.length > 0) {
+            cSelect.remove(0);
+          }
+          var newOption;
+          // create new options 
+          for (var i = 0; i < cList.length; i++) {
+            newOption = document.createElement("option");
+            newOption.value = cList[i]; // assumes option string and value are the same 
+            newOption.text = cList[i];
+            // add the new option 
+            try {
+              cSelect.add(newOption); // this will fail in DOM browsers but is needed for IE 
+            } catch (e) {
+              cSelect.appendChild(newOption);
+            }
+          }
+        }
+        //]]>
+      </script>
 </head>
 
 <body>
@@ -72,7 +117,7 @@
     </div>
 </nav>
 <div class="modal fade" id="modalContactForm" tabindex="-1">
-    <form action="https://formspree.io/soham5959595@gmail.com" method="post">
+    <form action="https://formspree.io/f/mwkavkkp" method="post">
         {% csrf_token %}
         <div class="modal-dialog">
             <div class="modal-content">
@@ -92,7 +137,7 @@
                         <input type="email" id="form29" name="cu-mail" class="form-control validate">
                     </div>
                     <div class="md-form">
-                        <i class="fa fa-tag prefix grey-text"></i><label class="modaltext" for="form32"> Subject</label>
+                        <i class="fa fa-tag prefi x grey-text"></i><label class="modaltext" for="form32"> Subject</label>
                         <input type="text" id="form32" name="cu-subject" class="form-control validate">
                     </div>
                     <div class="md-form">
@@ -130,8 +175,17 @@
                             <label for="productName" class="form-control-label">Product Name:</label>
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="text" name="pname" class="form-control" id="productName"
-                                   placeholder="Product Name" value="{{ purchase.pname }}" required/>
+                            <!-- <input type="text" name="pname" class="form-control" id="productName"
+                                   placeholder="Product Name" value="{{ purchase.pname }}" required/> -->
+                                   <select type="text" class="form-control" id="productName" name="pname" onchange="countryChange(this);">
+                                <option value = "select">-Select Medicine-</option>
+                                <option value = "calpol"> Calpol</option>
+                                <option value = "examine"> Examine </option>
+                                <option value = "chloroquine"> Chloroquine </option>
+                                <option value = "coldrain"> Coldrain </option>
+                                <!--<option value = "calpol"> Calpol</option>
+                                <option value = "calpol"> Calpol</option>-->
+                            </select>
                         </div>
                     </div>
                     <div class="row padtop15">
@@ -161,8 +215,11 @@
                             <label for="price" class="form-control-label padtop5">Price:</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" name="price" class="form-control" id="price" placeholder="Price"
-                                   value="{{ purchase.price }}" required/>
+                            <!-- <input type="text" name="price" class="form-control" id="price" placeholder="Price"
+                                   value="{{ purchase.price }}" required/> -->
+                            <select type="text" name="price" class="form-control" id="price">
+                            <option value=0 >Price</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row padtop15">
@@ -202,8 +259,14 @@
                             <label for="productName" class="form-control-label">Product Name:</label>
                         </div>
                         <div class="form-group col-md-4">
-                             <input type="text" name="pname" class="form-control" id="productName"
-                                   placeholder="Product Name" value="" required/>
+                            <select type="text" class="form-control" id="productName" name="pname" onchange="countryChange(this);">
+                                <option value = "select"> --Select Medicine-- </option>
+                                <option value = "calpol"> Calpol</option>
+                                <option value = "examine"> Examine </option>
+                                <option value = "chloroquine"> Chloroquine </option>
+                                <option value = "Coldrain"> Coldrain </option>
+<!--                                <option value = "Tablet"> Tablet </option>&ndash;&gt;-->
+                            </select>
 
                         </div>
                     </div>
@@ -234,8 +297,11 @@
                             <label for="price" class="form-control-label padtop5">Price:</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" name="price" class="form-control" id="price" placeholder="Price"
-                                   required/>
+                            <!-- <input type="text" name="price" class="form-control" id="price" placeholder="Price"
+                                   required/> -->
+                                   <select type="Number" name="price" class="form-control" id="price">
+                                    <option value=0 >Price</option>
+                                  </select>
                         </div>
                     </div>
                     <div class="row padtop15">
@@ -244,6 +310,10 @@
                         </div>
                         <div class="col-md-2">
                             <input type="text" name="qty" class="form-control" id="qty" placeholder="Quantity"
+                                   required/>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" name="Date" class="form-control"  placeholder="Date"
                                    required/>
                         </div>
                     </div>

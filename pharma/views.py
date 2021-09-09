@@ -5,6 +5,7 @@ from .models import Medicine
 from .models import Purchase
 from django.shortcuts import render
 from django.db import IntegrityError
+from json import dumps
 
 
 def home(request):
@@ -225,6 +226,10 @@ def purchaseform(request):
 
 
 def purchaseforminsert(request):
+    print("inside purchase form insert")
+    context=Purchase.objects.all()
+    dict = {"purchase": context}
+    print(dict)
     try:
         purchase = Purchase()
         purchase.pname = request.POST['pname']
@@ -233,12 +238,17 @@ def purchaseforminsert(request):
         purchase.qty = request.POST['qty']
         purchase.phn_no = request.POST['pno']
         purchase.price = request.POST['price']
+        purchase.date = request.POST['Date']
+
         a = (int(purchase.price)) * (int(purchase.qty))
         purchase.total = a
         purchase.save()
+
+        
+        
     except IntegrityError:
         return render(request, "pharma/new.html")
-    return render(request, 'pharma/index.html')
+    return render(request, 'pharma/index.html',dict)
 
 
 def purchaseformupdate(request, foo):
@@ -250,17 +260,24 @@ def purchaseformupdate(request, foo):
         purchase.qty = request.POST['qty']
         purchase.phn_no = request.POST['pno']
         purchase.price = request.POST['price']
+        purchase.date = request.POST['Date']
         a = (int(purchase.price)) * (int(purchase.qty))
         purchase.total = a
         purchase.save()
+
+        context=Purchase.objects.all()
+        contextJSON=dumps(context)
     except IntegrityError:
         return render(request, "pharma/new.html")
-    return render(request, 'pharma/index.html')
+    return render(request, 'pharma/chart.html', {'data': context})
 
 
 def purchaseformview(request, foo):
     purchase = Purchase.objects.get(pk=foo)
     dict = {'purchase': purchase}
+
+
+    #print(11111111111111111111111111)
     return render(request, 'pharma/purchase.html', dict)
 
 
@@ -273,4 +290,17 @@ def purchaseformdelete(request, foo):
 def purchasetable(request):
     purchase = Purchase.objects.all()
     dict = {"purchase": purchase}
+    print(dict['purchase'])
     return render(request, 'pharma/purchasetable.html', dict)
+
+def chart(request):
+    purchase = Purchase.objects.all()
+    dict = {"purchase": purchase}
+    ctx=[]
+    for ele in purchase:
+        print(ele.price)
+
+        ctx.append(ele.qty)
+    dict={"purchase":ctx}
+    print(dict['purchase'])
+    return render(request, 'pharma/chart.html', dict)

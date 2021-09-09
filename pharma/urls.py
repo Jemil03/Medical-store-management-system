@@ -1,5 +1,8 @@
 from django.conf.urls import url
 from . import views
+#from django.urls import path,include
+#import django.contrib.admin
+#import django.contrib.auth
 
 urlpatterns = [
     url(r'^$', views.home, name='index'),
@@ -39,5 +42,10 @@ urlpatterns = [
     url(r'^purchaseformdelete(?P<foo>[0-9]+)/', views.purchaseformdelete, name="purchaseformdelete"),
     url(r'^purchasetable/', views.purchasetable, name='purchasetable'),
 
+    url(r'^chart/', views.chart, name='chart'),
+    #login system
+    #url(r'^', include('accounts.urls')),
+    #path('',include("django.conrib.auth.urls")),
+    #url('', "django.conrib.auth.urls", name='login')
 
 ]

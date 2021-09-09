@@ -56,6 +56,7 @@ class Purchase(models.Model):
     price = models.BigIntegerField()
     qty = models.BigIntegerField()
     total = models.BigIntegerField()
+    date = models.DateField()
 
     def __str__(self):
         return self.pname
